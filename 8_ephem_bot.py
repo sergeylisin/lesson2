@@ -56,6 +56,7 @@ def planet(update,context):
     p = planet_types[planets.index(planet)]()
     p.compute()
     cns = constellation(p)[1]
+    print(cns)
     update.message.reply_text(cns)
 
 
