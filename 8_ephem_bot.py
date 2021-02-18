@@ -13,6 +13,7 @@
 
 """
 import logging
+import ephem
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
@@ -41,12 +42,42 @@ def talk_to_me(update, context):
     print(user_text)
     update.message.reply_text(text)
 
+def planet(update,context):
+  planets = ["Mercury","Venus", "Mars", "Moon", "Jupyter","Saturn","Neptune","Uranus"]
+  txt = update.message.text
+  planet = txt.split()[1]
+  if planet not in planets:
+    update.message.reply_text("unknown planet")
+  else:
+    print(planet)
+    if planet == "Mercury":
+      p = ephem.Mercury()
+    elif planet == "Venus":
+      p = ephem.Venus()
+    elif planet == "Mars":
+      p = ephem.Mars()
+    elif planet == "Moon":
+      p = ephem.Moon()
+    elif planet == "Jupyter":
+      p = ephem.Jupyter()
+    elif p == "Saturn":
+      p = ephem.Saturn()
+    elif planet == "Neptune":
+      p = ephem.Neptune()
+    elif planet == "Uranus":
+      p = ephem.Uranus()
+    p.compute()
+    constellation = ephem.constellation(p)[1]
+    print(constellation)
+    update.message.reply_text(constellation)
+
 
 def main():
-    mybot = Updater("КЛЮЧ, КОТОРЫЙ НАМ ВЫДАЛ BotFather", request_kwargs=PROXY, use_context=True)
+    mybot = Updater('1521578217:AAEnXxtMOFj1Y_1IhHAjVQBR5sRtRxVpC2w', request_kwargs=PROXY, use_context=True)
 
     dp = mybot.dispatcher
     dp.add_handler(CommandHandler("start", greet_user))
+    dp.add_handler(CommandHandler("planet", planet))
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
 
     mybot.start_polling()
