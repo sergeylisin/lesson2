@@ -53,7 +53,6 @@ def planet(update,context):
     cns = constellation(p)[1]
     update.message.reply_text(cns)
   except KeyError:
-    logging.info("unknown planet")
     update.message.reply_text("unknown planet")
 
     
