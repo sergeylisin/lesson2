@@ -30,6 +30,8 @@ PROXY = {
     }
 }
 
+planet_types = [Mercury,Venus, Mars, Moon, Saturn,Neptune,Uranus]
+planets = dict(map(lambda x: (x.__name__,x), planet_types))
 
 def greet_user(update, context):
     text = 'Вызван /start'
@@ -45,28 +47,13 @@ def talk_to_me(update, context):
 def planet(update,context):
   txt = update.message.text
   planet = txt.split()[1]
-  if planet == "Mercury":
-    p = ephem.Mercury()
-  elif planet == "Venus":
-    p = ephem.Venus()
-  elif planet == "Mars":
-    p = ephem.Mars()
-  elif planet == "Moon":
-    p = ephem.Moon()
-  elif planet == "Jupyter":
-    p = ephem.Jupyter()
-  elif p == "Saturn":
-    p = ephem.Saturn()
-  elif planet == "Neptune":
-    p = ephem.Neptune()
-  elif planet == "Uranus":
-    p = ephem.Uranus()
-  else:
+  try:
+    p = planets[planet]()
+    p.compute()
+    cns = constellation(p)[1]
+    update.message.reply_text(cns)
+  except KeyError:
     update.message.reply_text("unknown planet")
-  p.compute()
-  constellation = ephem.constellation(p)[1]
-  update.message.reply_text(constellation)
-
 
 
 def main():
