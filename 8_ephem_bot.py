@@ -13,7 +13,7 @@
 
 """
 import logging
-from ephem import Mercury,Venus, Mars, Moon, Saturn,Neptune,Uranus,constellation
+import ephem
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
@@ -54,8 +54,6 @@ def planet(update,context):
     update.message.reply_text(cns)
   except KeyError:
     update.message.reply_text("unknown planet")
-
-    
 
 
 def main():
